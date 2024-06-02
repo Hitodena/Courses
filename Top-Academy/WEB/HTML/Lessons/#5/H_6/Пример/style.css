@@ -1,0 +1,45 @@
+/* p{
+    /* top|right|bottom|left
+	border: 2px solid red;
+    /* border-bottom: 5px solid blue; */
+    /* border-width: 1px 6px 3px 10px;
+    border-left-width: 4px;
+    border-width: 10px;
+    border-style: dotted  dashed double solid;
+    border-color: yellow green;
+    border-top-color: red; */ 
+    /* margin: 10px 2px 20px 6px;
+    margin-left: 0;
+    padding: 20px 60px 10px 0px; */
+/* } */ 
+
+#one, #two{
+    border: 2px solid red;
+    width: 300px;
+    margin: 20px;
+    padding: 50px;
+}
+
+#one{
+    box-sizing: border-box;
+}
+#two{
+    box-sizing: content-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

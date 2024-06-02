@@ -1,0 +1,19 @@
+body{
+    /*  background-color: rgb(233, 32, 32);
+    background-image: url(leo.png);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-attachment: fixed; 
+    background: url(leo.png) no-repeat rgb(233, 32, 32) 100% 100% fixed;
+    background-size: cover; */
+
+    
+    background: url(t4.png) repeat-y right top,
+                url(t3.png) repeat-y left top,
+                url(leo.png)
+                
+    
+}
+p{
+    background-color: rgba(0, 255, 255, 0.171);
+}

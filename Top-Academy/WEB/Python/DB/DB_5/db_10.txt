@@ -1,0 +1,83 @@
+Таблица Salespeople:
+snum - номер продавца (первичный ключ)
+sname - имя продавца
+com - комиссионные продавца
+city - город проживания продавца
+
+Таблица Orders:
+onum - номер заказа (первичный ключ)
+snum - номер продавца
+cnum - номер заказчика
+amt - сумма заказа
+odate - дата заказа
+
+Таблица Customers:
+cnum - номер заказчика (первичный ключ)
+cname – имя заказчика (клиента)
+city - город проживания заказчика
+snum - номер продавца
+rating - рейтинг
+
+1. Необходимо решить извлекать ли некоторые данные из таблицы Заказчиков, если один и более заказчиков в этой таблице находятся в Берлине.
+select cnum, cname, city
+from Customers
+Where exists 
+    (SELECT *
+     FROM Customers
+     WHERE city="Berlin")
+
+2. Напишите запрос, который использовал бы подзапрос для получения всех заказов для заказчика с именем Cisneros. 
+select *
+from Orders o
+Where exists 
+    (SELECT c.cnum
+     FROM Customers c
+     WHERE o.cnum=c.cnum AND c.cname="Cisneros")
+
+3. Напишите запрос для извлечения всех продавцов, имеющих заказчиков с оценкой 300 (через операторы подзапросов).
+4. Напишите запрос, который выберет всех продавцов (по их имени и номеру), имеющих в своих городах заказчиков, которых они не обслуживают.
+
+5. Вывести всех продавцов и заказчиков, размещенных в Лондоне и вывести их как единое целое.
+SELECT cnum, cname, city
+FROM Customers
+WHERE city="London"
+
+UNION
+
+SELECT snum, sname, city
+FROM Salespeople
+WHERE city="London"
+
+6. Вывести номера и города продавцов.
+SELECT snum, city
+FROM Customers
+
+UNION
+
+SELECT snum, city
+FROM Salespeople
+
+
+7. Создайте объединение из двух запросов, которое показало бы имена, города и оценки всех заказчиков. Те из них, которые имеют поле  rating=200 и более, должны, кроме того, иметь слова - "Высокий Рейтинг", а остальные должны иметь слова "Низкий Рейтинг".
+SELECT cname, city, rating, "Высокий рейтинг" Рейтинг
+FROM Customers
+WHERE rating >= 200
+
+UNION
+
+
+SELECT cname, city, rating, "Низкий рейтинг" 
+FROM Customers
+WHERE rating < 200 
+
+
+8. Напишите запрос, который выведет пары имен заказчиков и клиентов.
+SELECT s.sname, c.cname
+FROM Salespeople s INNER JOIN Customers c
+ON s.snum=c.snum;
+
+9. Напишите запрос, который выведет  список всех клиентов и их заказы, отсортировав имена клиентов по алфавиту.
+SELECT c.cname, o.onum
+FROM Customers c INNER JOIN Orders o
+ON c.cnum=o.cnum
+ORDER BY c.cname;

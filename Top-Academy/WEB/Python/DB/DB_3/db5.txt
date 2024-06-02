@@ -1,0 +1,114 @@
+
+Таблица Client:
+INNClient - идентификационный номер клиента (первичный ключ)
+Client – клиент
+Status - место продажи
+
+Таблица ClientGoods:
+IDParty – (первичный ключ)
+ID – (внешний ключ)
+INNClient – идентификационный номер клиента (внешний ключ)
+CostUnit – стоимость за единицу 
+Count - количество приобретенного товара
+
+Таблица SallerGoods:
+ID – (первичный ключ)
+Code – код товара
+INNSeller – идентификационный код продавца (внешний ключ)
+DateStart – дата
+Goods – товар
+CostUnit – стоимость за единицу
+Count - количество товара на складе
+
+Таблица Seller:
+INNSeller - идентификационный код продавца (первичный ключ)
+Seller – продавец
+Status - статус
+
+
+
+1. Показать какие продавцы продают какие товары.
+SELECT S.Seller, sg.Goods  
+FROM SallerGoods as sg, Seller as s
+WHERE sg.INNSeller = s.INNSeller
+
+2. Вывести продавцов и клиентов (пары), связанные м/у собой приобретенным товаром.
+SELECT sg.Goods   
+FROM SallerGoods as sg, ClientGoods as cg
+WHERE sg.ID=cg.ID
+
+3. Вывести данные о товаре в алфавитном порядке.
+SELECT Goods
+From SallerGoods
+ORDER BY Goods ASC
+
+
+4. Вывести посредников, поставляющих товар для фирмы.
+Select DISTINCT c.Client
+From Client as c, ClientGoods as cg, SallerGoods as sg, Seller as s
+WHERE c.Status="посредник" AND c.INNClient=cg.INNClient AND cg.ID=sg.ID and sg.INNSeller = s.INNSeller
+
+5. Вывести список товара, поставляемого производителями.
+SELECT sg.Goods
+FROM Seller s, SallerGoods sg
+WHERE s.Status="производитель" AND s.INNSeller=sg.INNSeller
+	
+
+6. На какую сумму было всего куплено каждого товара фирмой.
+Select Round(cg.CostUnit*cg.Count) as Сумма
+From Client c, ClientGoods cg
+Where c.INNClient=cg.INNClient And c.Status="магазин"
+
+7. На какую сумму было продано каждого товара магазинам.
+Select Round(cg.CostUnit*cg.Count) as Сумма, sg.Goods as Товар
+From Client c, ClientGoods cg, SallerGoods as sg
+Where c.INNClient=cg.INNClient And c.Status="магазин" and sg.ID = cg.ID
+
+
+8. Выведите список товара, проданного в кафе.
+Select sg.Goods, c.Status
+From Client c, Sallergoods sg, ClientGoods cg
+Where c.Status = "кафе" and c.INNClient=cg.INNClient and cg.ID=sg.ID
+
+9. Определить какой товар был куплен у посредников.
+Select sg.Goods
+From Client c, ClientGoods cg, SallerGoods as sg
+Where c.INNClient=cg.INNClient And c.Status="посредник" and sg.ID = cg.ID
+
+10. Написать запрос, который выводит название товара и прибыль, полученную от его продажи (при продаже всех единиц товара).
+Select ROUND(sg.CostUnit*sg.Count) as "Прибыль", sg.Goods as "Товар"
+From Sallergoods sg
+ORDER BY ROUND(sg.CostUnit*sg.Count) DESC
+
+11.  Определите какие клиенты не покупали подсолнечное масло.
+Select c.Client
+From Client as c, ClientGoods as cg, SallerGoods as sg
+WHERE c.INNClient=cg.INNClient AND cg.ID=sg.ID AND sg.Goods IS NOT "масло подсолнечное"
+
+12. Определите поставщиков, сделки с которыми заключили 10-11/11/2007.
+SELECT s.Seller, sg.DateStart
+FROM Seller s, SallerGoods sg
+WHERE s.INNSeller=sg.INNSeller AND sg.DateStart BETWEEN '2007-11-10' AND '2007-11-12'
+
+13. Показать код и наименование товара, купленного посредниками.
+Select sg.Code, sg.Goods
+From SallerGoods as sg, Seller as s
+WHERE sg.INNSeller=s.INNSeller AND s.Status IS "посредник"
+
+14. Вывести список клиентов и сумму прибыли за каждый товар, полученную от продажи черного перца.
+Select c.Client, ROUND(cg.CostUnit*cg.Count) as "прибыль"
+From Client as c, ClientGoods as cg, SallerGoods as sg
+WHERE c.INNClient=cg.INNClient AND cg.ID=sg.ID AND sg.Goods="Перец черный молотый" or "Перец черный горошек"
+
+15.  Выведите список товаров в обратном порядке, если товар куплен у производителя и продан в кафе.
+Select sg.goods
+From Client as c, ClientGoods as cg, SallerGoods as sg, Seller as s
+WHERE s.Status="производитель" AND c.Status="кафе" AND c.INNClient=cg.INNClient AND cg.ID=sg.ID AND sg.INNSeller=s.INNSeller
+ORDER BY sg.ID DESC
+
+16. Вывести список товаров, если фирма купила их на сумму больше 1000.
+Select DISTINCT sg.Goods, ROUND(sg.CostUnit*sg.Count) as "сумма"
+From Client as c, ClientGoods as cg, SallerGoods as sg
+WHERE ROUND(sg.CostUnit*sg.Count) > 1000 and c.INNClient=cg.INNClient and cg.ID=sg.ID
+
+

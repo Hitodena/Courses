@@ -1,0 +1,22 @@
+li{
+    background-color: green;
+}
+
+ul{
+    text-align: center; 
+    list-style-type: circle;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style: circle inside;
+}
+
+ol{
+    list-style-type: lower-greek;
+    list-style: none;
+}
+
+body{
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: 10%;
+}

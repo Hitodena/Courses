@@ -1,0 +1,33 @@
+body {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.head{
+    list-style-type: upper-roman;
+}
+
+.lwb{
+    list-style-type: lower-alpha; color: black;
+}
+
+.f{
+    list-style-image: url(images/orange_marker.png);
+}
+
+.fr{
+    list-style-image: url(images/red_marker.png);
+}
+
+.sfg{
+    list-style-image: url(images/green_marker.png);
+}
+
+.sfb{
+    list-style-image: url(images/blue_marker.png);
+}
+
+.ssf{
+    list-style-image: url(images/black_marker.png);
+}
