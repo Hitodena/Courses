@@ -1,0 +1,114 @@
+1.С помощью объединения вывести данные о каждом заказчике, для которого определен продавец.
+
+SELECT z.*
+FROM (Zakaz z INNER JOIN Klient k ON z.ID_KL=k.ID_KL) INNER JOIN Prodaves p
+ON k.ID_pr=p.ID_Pr
+
+2.Вывести имя заказчика и данные о средней цене доставки для него. Если цена доставки больше средней по таблице написать - lot, меньше – few
+
+SELECT k.Name_KL AS "Имя заказчика", AVG(z.Cena_Dostavki) AS "Средняя цена доставки", "few" AS "few-lot"
+FROM Klient k, Zakaz z
+WHERE k.ID_KL=z.ID_KL
+GROUP BY k.Name_KL
+HAVING AVG(z.Cena_Dostavki) >=
+    (SELECT AVG(Cena_Dostavki)
+    FROM Zakaz)
+
+UNION    
+
+SELECT k.Name_KL, AVG(z.Cena_Dostavki), "lot"
+FROM Klient k, Zakaz z
+WHERE k.ID_KL=z.ID_KL
+GROUP BY k.Name_KL
+HAVING AVG(z.Cena_Dostavki) <
+    (SELECT AVG(Cena_Dostavki)
+    FROM Zakaz)
+
+3.Соедините вместе все таблицы с помощью внешнего объединения
+
+SELECT
+    Z.ID_Z,
+    P.ID_Pr,
+    K.ID_KL,
+    Z.SUMMA,
+    Z.Kol,
+    Z.DATA,
+    Z.CITY_Z,
+    Z.Cena_Dostavki,
+    P.Procent,
+    K.Name_KL,
+    K.City_KL,
+    K.Obl_KL,
+    K.Discoun,
+    P.ID_Pr,
+    P.Name_Pr,
+    P.City_Pr 
+FROM 
+    Zakaz Z
+LEFT JOIN 
+    Klient K ON K.ID_KL = Z.ID_KL 
+LEFT JOIN 
+   Prodaves P ON P.ID_Pr = K.ID_Pr AND P.ID_Pr = Z.ID_Pr;
+
+4.С помощью объединения вывести данные о скидках клиента для каждого продавца
+
+SELECT 
+    P.Name_Pr,
+    K.Discoun,
+    K.Name_KL
+FROM 
+    Prodaves P
+INNER JOIN 
+    Klient K ON P.ID_Pr = K.ID_Pr;
+
+
+5.Напишите запрос, который выведет все города, в которых живут продавцы и заказчики
+
+SELECT City_Pr AS City
+FROM Prodaves
+UNION
+SELECT City_KL AS City
+FROM Klient;
+
+6.С помощью объединения вывести все данные о заказчиках и  заказах, даже если заказчик не сделал ни одного заказа за указанный период.
+
+SELECT 
+    K.ID_KL,
+    K.ID_Pr,
+    K.Name_KL,
+    K.City_KL,
+    K.Obl_KL,
+    K.Discoun,
+    Z.ID_Z,
+    Z.ID_Pr AS Zakaz_ID_Pr,
+    Z.SUMMA,
+    Z.Kol,
+    Z.DATA,
+    Z.CITY_Z,
+    Z.Cena_Dostavki
+FROM 
+    Zakaz Z
+LEFT JOIN 
+    Klient K ON K.ID_KL = Z.ID_KL AND Z.DATA BETWEEN '1996-10-03' AND '1996-10-07';
+
+7.Составьте запроса для вывода имен и кодов всех продавцов, в чьих городах есть покупатели, которых они не обслуживают. С помощью оператора в подзапросе
+
+SELECT DISTINCT P.Name_Pr, P.ID_Pr
+FROM Prodaves P
+WHERE P.City_Pr IN (
+    SELECT K.City_KL
+    FROM Klient K
+    WHERE K.ID_Pr <> P.ID_Pr
+);
+
+8.Напишите запрос, который выведет все города и имена продавцов и заказчиков, которые живут в Лондоне.
+
+SELECT City_Pr, Name_Pr
+FROM Prodaves
+WHERE City_Pr = 'London'
+
+UNION
+
+SELECT City_KL, Name_KL
+FROM Klient
+WHERE City_KL = 'London';
