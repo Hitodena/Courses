@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="main-card">
+        <h1>Password generator</h1>
+        <form action="{% url 'password' %}" method="get">
+            <ul class="text">
+                <li><select name="length">
+                    {% for i in lst %}
+                    {% if i == 12 %}
+                    <option value="{{ i }}" selected>{{ i }}</option>
+                    {% else %}
+                 <option value="{{ i }}">{{ i }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select> Amount of symbols</li>
+                <li>
+                    <input type="checkbox" name="uppercase" id="up">
+                    <label for="up">Upper case</label>
+                </li>
+                <li>
+                    <input type="checkbox" name="numbers" id="num">
+                    <label for="num">Numbers</label>
+                </li>
+                <li>
+                    <input type="checkbox" name="special" id="spec">
+                    <label for="spec">Special symbols</label>
+                </li>
+            </ul>
+        <input type="submit" value="Generate Password">
+        </form>
+    </div>
+</div>
+</body>
+</html>
