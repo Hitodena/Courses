@@ -12,6 +12,7 @@ body {
     margin: 0 auto;
     background: #AF8260;
     border-radius: 6px;
+    box-sizing: border-box;
 }
 
 .main-card > h1 {
@@ -93,4 +94,8 @@ body {
     font-weight: 800;
     text-decoration: none;
     color: #E4C59E;
+}
+
+.main-card {
+    box-sizing: border-box;
 }
